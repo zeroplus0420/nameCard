@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#222222">
+  <title></title>
+  <script>
+    // ============================================================
+    // 내 정보와 화면 문구는 이 PROFILE 한 곳에서만 수정하세요.
+    // avatar.png를 이 HTML과 같은 폴더에 두면 자동으로 표시됩니다.
+    // value / max: 직접 정한 수치만 입력하세요. null은 '—'로 표시됩니다.
+    // 수치가 없는 막대는 숙련도가 아닌, 장식용 등장 연출입니다.
+    // ============================================================
+    const PROFILE = {
+      name: "박준",
+      level: 24,
+      role: "프로그래머",
+      introduction: "샌즈 좋아합니다.",
+      avatar: "avatar.png",
+      strengths: [
+        { stat: "HP", name: "C#", value: 3, max: 5 },
+        { stat: "ATK", name: "C++", value: 2, max: 5 },
+        { stat: "EXP", name: "Luau", value: 4, max: 5 }
+      ],
+      tools: ["ChatGPT"],
+      projects: [
+        { title: "OO 게임 개발 대회 우승", description: "전국구에서 열리는 게임 대회", year: "2027" },
+        { title: "비스타 2027 게임 출품", description: "서울에서 열리는 게임 콘테스트", year: "2027" },
+        { title: "교토 게임쇼 2027 게임 출품", description: "교토에서 열리는 게임 콘테스트", year: "2027" }
+      ],
+      portfolio: "https://sites.google.com/view/pj20070420/%ED%99%88",
+      text: {
+        title: "캐릭터 상태창",
+        level: "LV.",
+        role: "직업:",
+        strengths: "강점",
+        inventory: "인벤토리",
+        tools: "쓰는 도구",
+        saveLog: "세이브 로그",
+        projects: "해 본 일",
+        fight: "Fight",
+        portfolio: "포트폴리오",
+        light: "밝은 화면",
+        dark: "어두운 화면",
+        love: "당신의 LOVE가 올랐다.",
+        empty: "—",
+        disclosure: "이 페이지의 그림과 코드는 AI의 도움을 받아 만들었습니다"
+      }
+    };
+  </script>
+  <style>
+    /* 자체 제작한 영문 픽셀 글꼴. 외부 파일이나 네트워크가 필요 없습니다. */
+    @font-face { font-family: "Save Pixel"; src: url("data:font/woff;base64,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") format("woff"); font-weight: 400; font-display: swap; }
+    :root {
+      --page: #222222; --panel: #141414; --surface: #1b1b1b;
+      --text: #f6f4ed; --muted: #a8a69f; --line: #3c3c38;
+      --edge: #e1dfd5; --yellow: #f9e86a; --cyan: #83dcca;
+      --pink: #e5a6c1; --heart: #ff606d; --grid: #ffffff03;
+      --glow: #f9e86a13; --shadow: #00000050;
+      --body-font: "Noto Sans Mono CJK KR", "Malgun Gothic", "Apple SD Gothic Neo", monospace;
+    }
+    :root[data-theme="light"] {
+      --page: #f1efe5; --panel: #fffcf3; --surface: #eae8de;
+      --text: #292c27; --muted: #66685e; --line: #c7c7b6;
+      --edge: #4e5243; --yellow: #73620a; --cyan: #25685c;
+      --pink: #87485f; --heart: #bc3043; --grid: #26342005;
+      --glow: #73620a0b; --shadow: #32372115;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; min-width: 280px; background: var(--page); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; line-height: 1.65; }
+    body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 24px 24px; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    button, a, h1, h2, h3, p { margin: 0; }
+    a { color: inherit; }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--cyan); outline-offset: 6px; }
+    svg { display: block; flex-shrink: 0; }
+    .pixel { font-family: "Save Pixel", monospace; text-transform: uppercase; font-weight: 400; line-height: 1.5; }
+    .page { width: min(1056px, calc(100% - 64px)); margin: 44px auto 0; position: relative; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 2px 23px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 700; letter-spacing: .1em; }
+    .brand .heart { width: 19px; height: 19px; color: var(--heart); }
+    .theme-toggle { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--muted); padding: 7px 14px; font-size: 12px; cursor: pointer; }
+    .theme-toggle:hover { border-color: var(--yellow); color: var(--yellow); }
+    .theme-toggle svg { width: 15px; height: 15px; }
+    .window { position: relative; border: 2px solid var(--edge); background: var(--panel); box-shadow: 0 0 0 5px var(--page), 0 0 0 6px var(--line), 0 16px 65px var(--shadow), 0 0 40px var(--glow); }
+    .corner { position: absolute; width: 10px; height: 10px; background: var(--yellow); box-shadow: 0 0 12px var(--glow); z-index: 1; pointer-events: none; }
+    .corner.tl { top: -5px; left: -5px; } .corner.tr { top: -5px; right: -5px; }
+    .corner.bl { bottom: -5px; left: -5px; } .corner.br { bottom: -5px; right: -5px; }
+    .hero { display: grid; grid-template-columns: 37% 1fr; min-width: 0; }
+    .character { padding: 36px 36px 32px; border-right: 1px solid var(--line); position: relative; min-width: 0; }
+    .portrait-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .portrait { width: 96px; height: 96px; position: relative; flex-shrink: 0; }
+    .avatar-fallback { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(140deg, #74729b 0%, #46475b 45%, #655656 100%); border: 1px solid #ffffff35; color: #fff9e7; font-size: 39px; font-weight: 800; text-shadow: 3px 3px #00000035; }
+    .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; border: 2px solid var(--edge); image-rendering: pixelated; }
+    .portrait img[hidden], .avatar-fallback[hidden] { display: none; }
+    .level { font-size: 20px; color: var(--yellow); white-space: nowrap; }
+    h1 { font-size: clamp(36px, 4vw, 48px); font-weight: 800; letter-spacing: -.06em; line-height: 1.3; margin-top: 24px; overflow-wrap: anywhere; }
+    .role { font-size: 13px; color: var(--muted); margin-top: 9px; overflow-wrap: anywhere; }
+    .role-value { color: var(--text); }
+    .intro { display: flex; gap: 10px; margin-top: 26px; font-size: 14px; color: var(--text); overflow-wrap: anywhere; }
+    .asterisk { color: var(--yellow); font-size: 18px; line-height: 1.4; flex-shrink: 0; }
+    .stats { padding: 31px 38px 35px; min-width: 0; }
+    .section-heading { display: flex; align-items: center; gap: 11px; margin-bottom: 22px; }
+    .section-heading h2 { font-size: 14px; font-weight: 700; letter-spacing: .08em; }
+    .section-heading > svg { width: 17px; height: 17px; color: var(--yellow); }
+    .heading-line { height: 1px; background: var(--line); flex: 1; margin-left: 4px; }
+    .section-note { color: var(--muted); font-size: 11px; white-space: nowrap; }
+    .stat + .stat { margin-top: 22px; }
+    .stat { --stat-color: var(--yellow); }
+    .stat:nth-child(2) { --stat-color: var(--cyan); }
+    .stat:nth-child(3) { --stat-color: var(--pink); }
+    .stat-meta { display: flex; align-items: baseline; gap: 16px; min-width: 0; margin-bottom: 10px; }
+    .stat-code { width: 43px; flex-shrink: 0; font-size: 16px; color: var(--stat-color); }
+    .stat-name { font-size: 16px; font-weight: 700; overflow-wrap: anywhere; }
+    .stat-value { margin-left: auto; padding-left: 6px; font-size: 16px; color: var(--muted); white-space: nowrap; }
+    .stat-track { position: relative; height: 15px; background: var(--surface); border: 1px solid var(--line); padding: 3px; }
+    .stat-fill { height: 100%; width: var(--fill, 100%); background: var(--stat-color); transform-origin: left; transform: scaleX(0); }
+    .stat-fill::after { content: ""; display: block; height: 100%; background: repeating-linear-gradient(90deg, transparent 0 20px, var(--panel) 20px 23px); }
+    .stat-fill.is-filling { animation: charge .6s steps(16, end) both; animation-delay: var(--delay, 0ms); }
+    .details { display: grid; grid-template-columns: 37% 1fr; border-top: 1px solid var(--line); min-width: 0; }
+    .inventory { padding: 29px 36px 32px; border-right: 1px solid var(--line); min-width: 0; }
+    .inventory .section-heading { flex-wrap: wrap; gap: 10px; }
+    .inventory .section-note { margin-left: auto; }
+    .tool-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .tool { display: flex; align-items: center; gap: 15px; padding: 14px; border: 1px solid var(--line); background: var(--surface); min-width: 0; }
+    .tool-icon { display: grid; place-items: center; width: 41px; height: 41px; flex-shrink: 0; background: var(--panel); border: 1px solid var(--line); color: var(--cyan); }
+    .tool-icon svg { width: 23px; height: 23px; }
+    .tool-name { font-size: 15px; overflow-wrap: anywhere; }
+    .save-log { padding: 29px 38px 22px; min-width: 0; }
+    .save-log .section-heading { margin-bottom: 14px; }
+    .save-list { list-style: none; padding: 0; margin: 0; }
+    .save { position: relative; display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 13px; padding: 17px 0; }
+    .save + .save { border-top: 1px dashed var(--line); }
+    .save > svg { width: 17px; height: 17px; margin-top: 4px; color: var(--yellow); }
+    .save-title { font-size: 14px; font-weight: 700; line-height: 1.6; overflow-wrap: anywhere; }
+    .save-description { color: var(--muted); font-size: 12px; line-height: 1.8; margin-top: 5px; overflow-wrap: anywhere; }
+    .save-year { color: var(--muted); font-size: 12px; padding-top: 3px; }
+    .actions { padding: 25px 36px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); background: var(--surface); }
+    .love-message { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--yellow); min-width: 0; }
+    .love-message > svg { width: 19px; height: 19px; flex-shrink: 0; }
+    .love-message span { overflow-wrap: anywhere; }
+    .love-message:not(.is-ready) { visibility: hidden; }
+    .love-message.is-ready { animation: love-appear .45s ease-out both; }
+    .love-message.is-ready svg { animation: sparkle .8s ease-in-out 2; }
+    .fight { display: flex; align-items: center; justify-content: center; gap: 17px; min-height: 66px; min-width: 242px; padding: 12px 22px; border: 2px solid var(--yellow); color: var(--yellow); background: var(--panel); text-decoration: none; box-shadow: 3px 3px 0 var(--line), 0 0 18px var(--glow); transition: background .15s, color .15s, transform .15s; }
+    .fight .heart { width: 21px; height: 21px; }
+    .fight-word { font-size: 21px; }
+    .fight-label { font-size: 11px; }
+    .fight .arrow { width: 13px; height: 13px; margin-left: 3px; }
+    .fight:hover { background: var(--yellow); color: var(--panel); transform: translateY(-2px); }
+    .fight:active { transform: translate(2px, 2px); box-shadow: none; }
+    .footer { padding: 25px 10px 35px; color: var(--muted); text-align: center; font-size: 10px; line-height: 1.9; }
+    @keyframes charge { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes love-appear { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes sparkle { 0%, 100% { opacity: 1; filter: drop-shadow(0 0 0 transparent); } 50% { opacity: .55; filter: drop-shadow(0 0 7px var(--yellow)); } }
+    @media (max-width: 780px) {
+      .page { width: calc(100% - 40px); margin-top: 24px; }
+      .hero, .details { grid-template-columns: 1fr; }
+      .character { padding: 27px 26px 29px; border-right: 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 88px minmax(0, 1fr); column-gap: 22px; align-items: start; }
+      .portrait-row { display: contents; }
+      .portrait { width: 88px; height: 88px; grid-column: 1; grid-row: 1 / 4; align-self: center; }
+      .level { grid-column: 2; font-size: 17px; }
+      h1 { grid-column: 2; margin-top: 8px; font-size: 35px; }
+      .role { grid-column: 2; margin-top: 8px; font-size: 11px; }
+      .intro { grid-column: 1 / -1; margin-top: 25px; font-size: 13px; }
+      .stats { padding: 25px 26px 29px; }
+      .section-heading { margin-bottom: 21px; }
+      .section-heading h2 { font-size: 13px; }
+      .stat + .stat { margin-top: 21px; }
+      .stat-meta { gap: 14px; margin-bottom: 9px; }
+      .stat-name { font-size: 15px; }
+      .stat-track { height: 14px; }
+      .inventory { border-right: 0; border-bottom: 1px solid var(--line); padding: 25px 26px 27px; }
+      .inventory .section-heading { margin-bottom: 16px; }
+      .save-log { padding: 25px 26px 16px; }
+      .save { gap: 10px; grid-template-columns: 16px minmax(0, 1fr) auto; }
+      .save > svg { width: 14px; height: 14px; }
+      .save-title { font-size: 13px; }
+      .save-description { font-size: 11px; }
+      .save-year { font-size: 10px; }
+      .actions { flex-direction: column; padding: 26px; gap: 22px; }
+      .love-message { align-self: center; font-size: 12px; gap: 9px; }
+      .fight { width: 100%; min-width: 0; min-height: 64px; }
+      .footer { padding: 23px 4px 28px; font-size: 9px; }
+    }
+    @media (max-width: 370px) {
+      .page { width: calc(100% - 32px); }
+      .brand { font-size: 12px; gap: 8px; letter-spacing: 0; }
+      .theme-toggle { padding-inline: 10px; gap: 7px; font-size: 11px; }
+      .character, .stats, .inventory, .save-log, .actions { padding-left: 20px; padding-right: 20px; }
+      .character { column-gap: 16px; }
+      .save { grid-template-columns: 16px minmax(0, 1fr); }
+      .save-year { grid-column: 2; padding-top: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+      .stat-fill { transform: scaleX(1); }
+      .love-message { visibility: visible !important; }
+      .fight:hover, .fight:active { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    (() => {
+      "use strict";
+      const P = PROFILE;
+      const T = P.text;
+      const root = document.documentElement;
+      const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const THEME_KEY = "character-card-theme";
+      const paths = {
+        heart: "M1 2h2V1h3v1h1v1h1V2h1V1h3v1h2v5h-1v1h-1v1h-1v1h-1v1H9v1H8v1H7v-1H6v-1H5v-1H4V9H3V8H2V7H1Z",
+        star: "M7 0h2v4h2v2h4v2h-4v2H9v5H7v-5H5V8H1V6h4V4h2Z",
+        bars: "M1 10h3v5H1ZM6 6h3v9H6ZM11 1h3v14h-3Z",
+        bag: "M5 0h6v2H5ZM3 3h10v2h2v10H1V5h2ZM3 7v6h10V7ZM6 9h4v2H6Z",
+        chip: "M5 1h2v2h2V1h2v2h2v2h2v2h-2v2h2v2h-2v2h-2v2H9v-2H7v2H5v-2H3v-2H1V9h2V7H1V5h2V3h2ZM5 5v6h6V5ZM7 7h2v2H7Z",
+        sun: "M7 0h2v3H7ZM7 13h2v3H7ZM0 7h3v2H0ZM13 7h3v2h-3ZM2 2h2v2H2ZM12 2h2v2h-2ZM2 12h2v2H2ZM12 12h2v2h-2ZM5 4h6v1h1v6h-1v1H5v-1H4V5h1Z",
+        moon: "M7 1h3v2H8v2H6v5h2v2h5v-1h2v3h-2v1H5v-1H3v-2H2V5h1V3h2V2h2Z",
+        arrow: "M3 2h11v11h-2V6L4 14l-2-2 8-8H3Z"
+      };
+      function element(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined && text !== null) node.textContent = String(text);
+        return node;
+      }
+      function icon(name) {
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("viewBox", "0 0 16 16");
+        svg.setAttribute("aria-hidden", "true");
+        svg.setAttribute("focusable", "false");
+        svg.setAttribute("class", name);
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", paths[name]);
+        path.setAttribute("fill", "currentColor");
+        svg.append(path);
+        return svg;
+      }
+      function heading(title, symbol, note) {
+        const box = element("div", "section-heading");
+        box.append(icon(symbol), element("h2", "", title));
+        box.append(element("span", "heading-line"));
+        if (note) box.append(element("span", "section-note", note));
+        return box;
+      }
+      function section(className, title) {
+        const box = element("section", className);
+        box.setAttribute("aria-label", title);
+        return box;
+      }
+
+      document.title = `${P.name} · ${T.title}`;
+      const page = element("div", "page");
+      const topbar = element("header", "topbar");
+      const brand = element("div", "brand");
+      brand.append(icon("heart"), element("span", "", T.title));
+      const themeButton = element("button", "theme-toggle");
+      themeButton.type = "button";
+      function setTheme(theme) {
+        root.dataset.theme = theme;
+        const isDark = theme === "dark";
+        const nextLabel = isDark ? T.light : T.dark;
+        themeButton.replaceChildren(icon(isDark ? "sun" : "moon"), element("span", "", nextLabel));
+        themeButton.setAttribute("aria-label", nextLabel);
+        document.querySelector('meta[name="theme-color"]').content = isDark ? "#222222" : "#f1efe5";
+      }
+      let savedTheme;
+      try { savedTheme = localStorage.getItem(THEME_KEY); } catch (_) { /* file://와 저장 차단 환경도 지원 */ }
+      setTheme(savedTheme === "light" ? "light" : "dark");
+      themeButton.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        setTheme(theme);
+        try { localStorage.setItem(THEME_KEY, theme); } catch (_) { /* 저장 실패해도 전환은 작동 */ }
+      });
+      topbar.append(brand, themeButton);
+
+      const main = element("main", "window");
+      for (const position of ["tl", "tr", "bl", "br"]) {
+        const corner = element("span", `corner ${position}`);
+        corner.setAttribute("aria-hidden", "true");
+        main.append(corner);
+      }
+      const hero = element("div", "hero");
+      const character = section("character", P.name);
+      const portraitRow = element("div", "portrait-row");
+      const portrait = element("div", "portrait");
+      const initial = Array.from(P.name.trim())[0] || T.empty;
+      const fallback = element("div", "avatar-fallback", initial);
+      fallback.setAttribute("role", "img");
+      fallback.setAttribute("aria-label", P.name);
+      const avatar = element("img");
+      avatar.hidden = true;
+      avatar.alt = P.name;
+      avatar.width = 96;
+      avatar.height = 96;
+      avatar.addEventListener("load", () => { fallback.hidden = true; avatar.hidden = false; });
+      avatar.addEventListener("error", () => { avatar.hidden = true; fallback.hidden = false; });
+      if (P.avatar) avatar.src = P.avatar;
+      portrait.append(fallback, avatar);
+      portraitRow.append(portrait, element("span", "level pixel", `${T.level}${P.level}`));
+      const name = element("h1", "", P.name);
+      const role = element("p", "role");
+      role.append(`${T.role} `, element("span", "role-value", P.role));
+      const introduction = element("p", "intro");
+      const asterisk = element("span", "asterisk pixel", "*");
+      asterisk.setAttribute("aria-hidden", "true");
+      introduction.append(asterisk, element("span", "", P.introduction));
+      character.append(portraitRow, name, role, introduction);
+
+      const stats = section("stats", T.strengths);
+      stats.append(heading(T.strengths, "bars"));
+      const statList = element("div", "stat-list");
+      const fills = [];
+      P.strengths.forEach(strength => {
+        const row = element("div", "stat");
+        const meta = element("div", "stat-meta");
+        const hasValue = Number.isFinite(strength.value);
+        const hasMax = Number.isFinite(strength.max) && strength.max > 0;
+        const displayed = hasValue ? (hasMax ? `${strength.value} / ${strength.max}` : strength.value) : T.empty;
+        meta.append(element("span", "stat-code pixel", strength.stat), element("span", "stat-name", strength.name), element("span", "stat-value", displayed));
+        const track = element("div", "stat-track");
+        // 구체적인 수치가 없는 막대는 장식이며 보조기기에 능력치로 알리지 않습니다.
+        track.setAttribute("aria-hidden", "true");
+        const fill = element("div", "stat-fill");
+        if (hasValue && hasMax) fill.style.setProperty("--fill", `${Math.max(0, Math.min(100, strength.value / strength.max * 100))}%`);
+        track.append(fill);
+        row.append(meta, track);
+        statList.append(row);
+        fills.push(fill);
+      });
+      stats.append(statList);
+      hero.append(character, stats);
+
+      const details = element("div", "details");
+      const inventory = section("inventory", T.inventory);
+      inventory.append(heading(T.inventory, "bag", T.tools));
+      const toolList = element("ul", "tool-list");
+      P.tools.forEach(tool => {
+        const item = element("li", "tool");
+        const badge = element("span", "tool-icon");
+        badge.append(icon("chip"));
+        item.append(badge, element("span", "tool-name", tool));
+        toolList.append(item);
+      });
+      inventory.append(toolList);
+
+      const saveLog = section("save-log", T.saveLog);
+      saveLog.append(heading(T.saveLog, "star", T.projects));
+      const saveList = element("ol", "save-list");
+      P.projects.forEach(project => {
+        const item = element("li", "save");
+        const content = element("div", "save-content");
+        content.append(element("h3", "save-title", project.title || T.empty), element("p", "save-description", project.description || T.empty));
+        const year = element("span", "save-year pixel", project.year ?? T.empty);
+        item.append(icon("star"), content, year);
+        saveList.append(item);
+      });
+      saveLog.append(saveList);
+      details.append(inventory, saveLog);
+
+      const actions = element("div", "actions");
+      const love = element("p", "love-message");
+      love.setAttribute("role", "status");
+      love.setAttribute("aria-live", "polite");
+      love.setAttribute("aria-atomic", "true");
+      const loveText = element("span");
+      love.append(icon("star"), loveText);
+      const fight = element("a", "fight");
+      fight.href = P.portfolio;
+      fight.target = "_blank";
+      fight.rel = "noopener noreferrer";
+      fight.append(icon("heart"), element("span", "fight-word pixel", T.fight), element("span", "fight-label", T.portfolio), icon("arrow"));
+      actions.append(love, fight);
+      main.append(hero, details, actions);
+      page.append(topbar, main, element("footer", "footer", T.disclosure));
+      document.getElementById("app").replaceChildren(page);
+
+      let animationFinished = false;
+      function finishAnimation() {
+        fills.forEach(fill => {
+          fill.classList.remove("is-filling");
+          fill.style.transform = "scaleX(1)";
+        });
+        if (animationFinished) return;
+        animationFinished = true;
+        loveText.textContent = T.love;
+        love.classList.add("is-ready");
+      }
+      function startAnimation() {
+        if (motion.matches || fills.length === 0) { finishAnimation(); return; }
+        // 동일한 CSS 타임라인에서 순서대로 채우고 실제 완료 후 문구를 표시합니다.
+        fills.forEach((fill, index) => fill.style.setProperty("--delay", `${200 + index * 680}ms`));
+        fills[fills.length - 1].addEventListener("animationend", finishAnimation, { once: true });
+        requestAnimationFrame(() => {
+          if (!animationFinished) fills.forEach(fill => fill.classList.add("is-filling"));
+        });
+      }
+      startAnimation();
+      motion.addEventListener("change", event => { if (event.matches) finishAnimation(); });
+    })();
+  </script>
+</body>
+</html>
